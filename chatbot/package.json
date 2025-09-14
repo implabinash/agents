@@ -4,7 +4,7 @@
     "description": "",
     "main": "main.js",
     "scripts": {
-        "dev": "node --env-file=.env main.js"
+        "dev": "node --env-file=.env src/main.js"
     },
     "keywords": [],
     "type": "module",
