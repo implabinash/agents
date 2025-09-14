@@ -1,0 +1,14 @@
+{
+    "name": "chatbot",
+    "version": "1.0.0",
+    "description": "",
+    "main": "main.js",
+    "scripts": {
+        "dev": "node --env-file=.env main.js"
+    },
+    "keywords": [],
+    "type": "module",
+    "author": "",
+    "license": "ISC",
+    "packageManager": "pnpm@10.11.1"
+}
