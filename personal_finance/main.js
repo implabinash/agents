@@ -114,6 +114,7 @@ const callAgent = async () => {
     }
 
     console.log(expenseDB);
+    rl.close();
 };
 
 callAgent();
