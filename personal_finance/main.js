@@ -2,6 +2,8 @@ import Groq from "groq-sdk";
 
 const groq = new Groq({ apiKey: process.env.AGENT_KEY });
 
+let expenseDB = [];
+
 const callAgent = async () => {
     let messages = [
         {
@@ -13,7 +15,7 @@ const callAgent = async () => {
 
     messages.push({
         role: "user",
-        content: "How much money I have spent this month?",
+        content: "I baught a new macbook pro for 400000.",
     });
 
     while (true) {
@@ -41,6 +43,28 @@ const callAgent = async () => {
                         },
                     },
                 },
+                {
+                    type: "function",
+                    function: {
+                        name: "addExpense",
+                        description:
+                            "Add a new expense to the expense database",
+                        parameters: {
+                            type: "object",
+                            properties: {
+                                name: {
+                                    type: "string",
+                                    description:
+                                        "Name of the expense, e.g., Baught a iPhone",
+                                },
+                                amount: {
+                                    type: "string",
+                                    description: "Amount of the expense",
+                                },
+                            },
+                        },
+                    },
+                },
             ],
         });
 
@@ -58,8 +82,11 @@ const callAgent = async () => {
             const args = tool.function.arguments;
 
             let result = "";
+
             if (name === "getTotalExpense") {
                 result = getTotalExpense(JSON.parse(args));
+            } else if (name === "addExpense") {
+                result = addExpense(JSON.parse(args));
             }
 
             messages.push({
@@ -69,10 +96,21 @@ const callAgent = async () => {
             });
         }
     }
+
+    console.log(expenseDB);
 };
 
 callAgent();
 
 const getTotalExpense = ({ from, to }) => {
-    return "12000";
+    const totalExpense = expenseDB.reduce((acc, expense) => {
+        return acc + expense.amount;
+    }, 0);
+
+    return `${totalExpense}`;
+};
+
+const addExpense = ({ name, amount }) => {
+    expenseDB.push({ name, amount });
+    return "Added";
 };
