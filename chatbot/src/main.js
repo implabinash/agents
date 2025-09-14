@@ -1,12 +1,21 @@
 import readline from "node:readline/promises";
 
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-});
+const main = async () => {
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+    });
 
-const query = await rl.question("Hi: ");
+    while (true) {
+        const query = await rl.question("User: ");
 
-rl.close();
+        if (query === "/exit") {
+            rl.close();
+            break;
+        }
 
-console.log(query);
+        console.log(`${query}\n`);
+    }
+};
+
+main();

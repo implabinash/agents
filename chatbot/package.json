@@ -10,5 +10,9 @@
     "type": "module",
     "author": "",
     "license": "ISC",
-    "packageManager": "pnpm@10.11.1"
+    "packageManager": "pnpm@10.11.1",
+    "dependencies": {
+        "@langchain/core": "^0.3.75",
+        "@langchain/langgraph": "^0.4.9"
+    }
 }
