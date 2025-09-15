@@ -1,7 +1,11 @@
 import { MessagesAnnotation, StateGraph } from "@langchain/langgraph";
 import { ChatGroq } from "@langchain/groq";
+import { ToolNode } from "@langchain/langgraph/prebuilt";
 
 import readline from "node:readline/promises";
+
+const tools = [];
+const toolnode = new ToolNode(tools);
 
 const llm = new ChatGroq({
     model: "openai/gpt-oss-20b",
@@ -15,10 +19,16 @@ const callModel = async (state) => {
     return { messages: [response] };
 };
 
+const shouldContinue = (state) => {
+    return "__end__";
+};
+
 const workflow = new StateGraph(MessagesAnnotation)
     .addNode("agent", callModel)
+    .addNode("tools", toolnode)
     .addEdge("__start__", "agent")
-    .addEdge("agent", "__end__");
+    .addEdge("agent", "__end__")
+    .addConditionalEdges("agent", shouldContinue);
 
 const app = workflow.compile();
 
